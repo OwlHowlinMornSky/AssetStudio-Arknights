@@ -1,4 +1,8 @@
-# AssetStudio
+# AssetStudio-Arknights
+
+## Fork Info
+
+This fork is tested only on Arknights, and problems about other apps will be ignored.
 
 ## Changes
 
