@@ -1,14 +1,15 @@
 ﻿using AssetStudio;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
 using System.IO;
+using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using static AssetStudioGUI.Exporter;
-using System.Collections;
-using System.Security.Policy;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace AssetStudioGUI {
 	internal class ExporterArknightsCharArt(List<AssetItem> allAssets) {
@@ -237,6 +238,14 @@ namespace AssetStudioGUI {
 
 		private bool ExportTextures(string savePath, long mainTexID, long alphaTexID) {
 			bool res0 = false, res1 = false;
+
+			if (mainTexID != 0 && alphaTexID != 0) {
+				var mainTex = m_texItems.Find(x => x.m_PathID == mainTexID);
+				var alphaTex = m_texItems.Find(x => x.m_PathID == alphaTexID);
+				if (ExportTexture2D_CombineRGBA(mainTex, alphaTex, savePath))
+					return true;
+			}
+
 			if (mainTexID != 0) {
 				var mainTexs = m_texItems.FindAll(x => x.m_PathID == mainTexID);
 				foreach (var tex in mainTexs) {

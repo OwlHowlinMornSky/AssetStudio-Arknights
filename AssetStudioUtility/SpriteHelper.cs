@@ -153,7 +153,7 @@ namespace AssetStudio {
 			}
 		}
 
-		private static Image<Bgra32> CombineChannelA(Image<Bgra32> im0, Image<Bgra32> im1) {
+		public static Image<Bgra32> CombineChannelA(Image<Bgra32> im0, Image<Bgra32> im1) {
 			Configuration.Default.PreferContiguousImageBuffers = true;
 			for (int j = 0, m = Math.Min(im0.Width, im1.Width), n = Math.Min(im0.Height, im1.Height); j < n; ++j) {
 				var r0 = im0.DangerousGetPixelRowMemory(j).Span;

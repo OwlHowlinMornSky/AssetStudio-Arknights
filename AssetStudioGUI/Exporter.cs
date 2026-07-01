@@ -429,6 +429,37 @@ namespace AssetStudioGUI {
 			return false;
 		}
 
+		public static bool ExportTexture2D_CombineRGBA(AssetItem itemRGB, AssetItem itemA, string exportPath) {
+			var m_Texture2DRGB = (Texture2D)itemRGB.Asset;
+			var m_Texture2DA = (Texture2D)itemA.Asset;
+			if (Properties.Settings.Default.convertTexture) {
+				var type = Properties.Settings.Default.convertType;
+				if (!TryExportFile(exportPath, itemRGB, "." + type.ToString().ToLower(), out var exportFullPath))
+					return false;
+				var imageRGB = m_Texture2DRGB.ConvertToImage(true);
+				if (imageRGB == null)
+					return false;
+				var imageA = m_Texture2DA.ConvertToImage(true);
+				if (imageA != null) {
+					imageRGB = SpriteHelper.CombineChannelA(imageRGB, imageA);
+				}
+				using (imageRGB) {
+					using var file = File.OpenWrite(exportFullPath);
+					imageRGB.WriteToStream(file, type);
+				}
+				return true;
+			}
+			else {
+				if (!TryExportFile(exportPath, itemRGB, ".tex", out var exportFullPath))
+					return false;
+				File.WriteAllBytes(exportFullPath, m_Texture2DRGB.image_data.GetData());
+				if (!TryExportFile(exportPath, itemA, ".tex", out var exportFullPath2))
+					return false;
+				File.WriteAllBytes(exportFullPath2, m_Texture2DA.image_data.GetData());
+				return true;
+			}
+		}
+
 		public static bool ExportRawFile(AssetItem item, string exportPath) {
 			if (!TryExportFile(exportPath, item, ".dat", out var exportFullPath))
 				return false;
