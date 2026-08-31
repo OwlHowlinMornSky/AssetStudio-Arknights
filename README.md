@@ -2,7 +2,7 @@
 
 ## Fork Info
 
-This fork is tested only on Arknights, and problems about other apps will be ignored.
+This fork is only tested for Arknights, so problems about other applications may be ignored.
 
 ## Changes
 
